@@ -59,7 +59,12 @@ with st.sidebar:
 # เปลี่ยนจาก @st.cache_data เป็นแบบดึงใหม่เสมอ เพื่อให้เวลาอัปเดตข้อมูลแล้วหน้าเว็บเปลี่ยนตามทันที
 def load_data():
     file_name = "Data_2Class_V1.xlsx" 
+    st.write(f"กำลังค้นหาไฟล์ชื่อ: {file_name}")
+    st.write("รายชื่อไฟล์ทั้งหมดที่ระบบมองเห็นในโฟลเดอร์นี้:")
+    st.write(os.listdir())
+    
     if os.path.exists(file_name):
+        st.success("เจอไฟล์")
         df = pd.read_excel(file_name)
         if 'LATITUDE' in df.columns and 'LONGITUDE' in df.columns:
             df['LATITUDE'] = pd.to_numeric(df['LATITUDE'], errors='coerce')
@@ -69,6 +74,8 @@ def load_data():
         if 'code_ระดับความเสี่ยง' in df.columns:
             df['ระดับความเสี่ยง'] = df['code_ระดับความเสี่ยง'].map({1: 'เสี่ยงต่ำ', 2: 'เสี่ยงสูง'})
         return df
+    else;
+        st.error(f"❌ หาไฟล์ '{file_name}' ไม่เจอ")
     return None
 
 @st.cache_resource
@@ -308,3 +315,4 @@ with tab4:
 
             st.warning("ไม่พบไฟล์ Excel ข้อมูล ไม่สามารถจัดการข้อมูลได้")
             st.info(f"🔍 ลิสต์ไฟล์ทั้งหมดที่ระบบมองเห็นตอนนี้: {os.listdir()}")
+
