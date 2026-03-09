@@ -74,7 +74,7 @@ def load_data():
         if 'code_ระดับความเสี่ยง' in df.columns:
             df['ระดับความเสี่ยง'] = df['code_ระดับความเสี่ยง'].map({1: 'เสี่ยงต่ำ', 2: 'เสี่ยงสูง'})
         return df
-    else;
+    else:
         st.error(f"❌ หาไฟล์ '{file_name}' ไม่เจอ")
     return None
 
@@ -315,4 +315,5 @@ with tab4:
 
             st.warning("ไม่พบไฟล์ Excel ข้อมูล ไม่สามารถจัดการข้อมูลได้")
             st.info(f"🔍 ลิสต์ไฟล์ทั้งหมดที่ระบบมองเห็นตอนนี้: {os.listdir()}")
+
 
