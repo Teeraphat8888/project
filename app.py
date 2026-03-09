@@ -57,15 +57,13 @@ with st.sidebar:
 # 3. ฟังก์ชันโหลดไฟล์ทั้งหมด (Data + ML Assets)
 # ==========================================
 # เปลี่ยนจาก @st.cache_data เป็นแบบดึงใหม่เสมอ เพื่อให้เวลาอัปเดตข้อมูลแล้วหน้าเว็บเปลี่ยนตามทันที
+@st.cache_data
 def load_data():
-    file_name = "Data_2Class_V1.xlsx" 
-    st.write(f"กำลังค้นหาไฟล์ชื่อ: {file_name}")
-    st.write("รายชื่อไฟล์ทั้งหมดที่ระบบมองเห็นในโฟลเดอร์นี้:")
-    st.write(os.listdir())
-    
+    file_name = "Data_2Class_V1.csv" # เปลี่ยนนามสกุลไฟล์
     if os.path.exists(file_name):
-        st.success("เจอไฟล์")
-        df = pd.read_excel(file_name)
+        # เปลี่ยนเป็น read_csv และใส่ encoding เพื่อให้อ่านภาษาไทยได้สมบูรณ์
+        df = pd.read_csv(file_name, encoding='utf-8') 
+        
         if 'LATITUDE' in df.columns and 'LONGITUDE' in df.columns:
             df['LATITUDE'] = pd.to_numeric(df['LATITUDE'], errors='coerce')
             df['LATITUDE'] = df['LATITUDE'].fillna(df['LATITUDE'].median())
@@ -74,8 +72,6 @@ def load_data():
         if 'code_ระดับความเสี่ยง' in df.columns:
             df['ระดับความเสี่ยง'] = df['code_ระดับความเสี่ยง'].map({1: 'เสี่ยงต่ำ', 2: 'เสี่ยงสูง'})
         return df
-    else:
-        st.error(f"❌ หาไฟล์ '{file_name}' ไม่เจอ")
     return None
 
 @st.cache_resource
@@ -315,5 +311,6 @@ with tab4:
 
             st.warning("ไม่พบไฟล์ Excel ข้อมูล ไม่สามารถจัดการข้อมูลได้")
             st.info(f"🔍 ลิสต์ไฟล์ทั้งหมดที่ระบบมองเห็นตอนนี้: {os.listdir()}")
+
 
 
